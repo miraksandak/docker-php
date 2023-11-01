@@ -1,0 +1,22 @@
+name = Polzer Base
+description = Base theme by <a href="http://www.polzer.cz/">Jan Polzer</a>
+version = VERSION
+core = 7.x
+engine = phptemplate
+
+stylesheets[all][] = normalize.css
+stylesheets[all][] = formalize.css
+stylesheets[all][] = styles.css
+
+scripts[] = scripts.js
+scripts[] = jquery.formalize.min.js
+
+regions[sidebar_first]  = Left sidebar
+regions[sidebar_second] = Right sidebar
+regions[content] = Content
+regions[header] = Header
+regions[footer] = Footer
+regions[highlighted] = Highlighted
+regions[help] = Help
+regions[page_top] = Page Top
+regions[page_bottom] = Page Bottom

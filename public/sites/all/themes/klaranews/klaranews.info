@@ -1,0 +1,19 @@
+name = klaranews
+description = Base theme by <a href="http://www.polzer.cz/">Jan Polzer</a>
+version = VERSION
+core = 7.x
+engine = phptemplate
+
+base theme = polzer_base
+
+stylesheets[all][] = styles.css
+
+scripts[] = scripts.js
+
+regions[header] = Header
+regions[navigation] = Navigation
+regions[content] = Content
+regions[footer] = Footer
+regions[help] = Help
+regions[page_top] = Page Top
+regions[page_bottom] = Page Bottom

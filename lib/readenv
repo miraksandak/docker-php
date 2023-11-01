@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\ErrorHandler\Debug;
+
+if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+}
+
+$scheme = "mysql";
+$host = "db";
+$port = "3306";
+$user = "user";
+$password = "userpass";
+$path = "/thedatabase";
+
+if ($scheme === null || $host === null || $port === null || $user === null || $password === null || $path === null) {
+    exit(1);
+}
+
+if ($scheme !== 'mysql') {
+    exit(1);
+}
+
+if (substr($path, 0, 1) !== '/') {
+    exit(1);
+}
+
+$database = substr($path, 1);
+
+echo "mysqlhost=".escapeshellarg($host)."\n";
+echo "mysqlport=".escapeshellarg($port)."\n";
+echo "mysqluser=".escapeshellarg($user)."\n";
+echo "mysqlpass=".escapeshellarg($password)."\n";
+echo "mysqldb=".escapeshellarg($database)."\n";
+exit(0);
