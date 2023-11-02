@@ -476,19 +476,14 @@ $conf['i18n_variables'] = array(
   // Contact form information
   'contact_form_information',
 );
-$databases = array (
-  'default' =>
-  array (
-    'default' =>
-    array (
-      'driver' => 'mysql',
-      'database' => 'klara_s_db',
-      'username' => 'klara_s_admin',
-      'password' => 'kajatevut3',
-      'host' => 'localhost',
-      'port' => '',
-      'prefix' => '',
-    ),
-  ),
+$databases['default']['default'] = array(
+   'driver' => 'mysql',
+   'database' => 'thedatabase', // Use the same database name defined in your Docker Compose file
+   'username' => 'user', // Use the same username defined in your Docker Compose file
+   'password' => 'userpass', // Use the same password defined in your Docker Compose file
+   'host' => 'db', // This should match the service name in your Docker Compose file
+   'port' => '3306', // Use the same port defined in your Docker Compose file
+   'prefix' => '',
+   'collation' => 'utf8_general_ci', // Use the appropriate collation if needed
 );
 $conf['drupal_http_request_fails'] = FALSE;
