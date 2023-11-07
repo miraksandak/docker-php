@@ -8,7 +8,7 @@ ADD fix-www-data-user /usr/local/sbin/fix-www-data-user
 RUN perl /usr/local/sbin/fix-www-data-user "${WWW_DATA_UID}" "${WWW_DATA_GID}"
 RUN chown -R www-data:www-data /var/www
 
-RUN apt-get update && apt-get -y install git libzip-dev zip
+RUN apt-get update && apt-get -y install git libzip-dev zip libpng-dev
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
@@ -19,3 +19,4 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 
 RUN docker-php-ext-install zip bcmath pdo pdo_mysql mysqli
 RUN a2enmod rewrite
+RUN docker-php-ext-install gd
