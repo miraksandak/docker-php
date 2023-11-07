@@ -164,6 +164,25 @@ function i18n_field_field_formatter_view($entity_type, $entity, $field, $instanc
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add extra handler to clear field textgroup cache after translation update.
+ */
+function i18n_field_form_i18n_string_translate_page_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = 'i18n_field_form_i18n_string_translate_page_form_submit';
+}
+
+/**
+ * Field extra translation form submit function
+ *
+ * We need to clear also field textgroup cache after translation update.
+ */
+function i18n_field_form_i18n_string_translate_page_form_submit($form, &$form_state) {
+  $field_class = new i18n_string_textgroup_cached('field');
+  $field_class->cache_reset();
+}
+
+/**
  * Implements hook_field_widget_form_alter().
  *
  * Translate:
@@ -176,7 +195,7 @@ function i18n_field_field_widget_form_alter(&$element, &$form_state, $context) {
   global $language;
 
   // Don't translate if the widget is being shown on the field edit form.
-  if ($form_state['build_info']['form_id'] == 'field_ui_field_edit_form') {
+  if (isset($form_state['build_info']['form_id']) && $form_state['build_info']['form_id'] == 'field_ui_field_edit_form') {
     return;
   }
 
@@ -398,12 +417,16 @@ function i18n_field_instance_update_strings($instance) {
  *   (number or text), values of the array are the display labels.
  */
 function i18n_field_translate_allowed_values($field, $langcode = NULL) {
-  if (!empty($field['settings']['allowed_values'])) {
-    return i18n_string_translate(array('field', $field['field_name'], '#allowed_values'), $field['settings']['allowed_values'], array('langcode' => $langcode, 'sanitize' => FALSE));
-  }
-  else {
+  $allowed_values = list_allowed_values($field);
+  if (!$allowed_values) {
     return array();
   }
+  // Do not attempt to translate options from a callback.
+  $function = $field['settings']['allowed_values_function'];
+  if (!empty($function) && function_exists($function)) {
+    return $allowed_values;
+  }
+  return i18n_string_translate(array('field', $field['field_name'], '#allowed_values'), $allowed_values, array('langcode' => $langcode, 'sanitize' => FALSE));
 }
 
 /**

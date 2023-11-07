@@ -153,6 +153,15 @@ function i18n_string_menu_alter(&$items) {
     'file' => 'i18n_string.pages.inc',
     'file path' => drupal_get_path('module', 'i18n_string'),
   );
+  $items['admin/config/regional/translate/translate'] = array(
+    'title' => 'Translate',
+    'weight' => 10,
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'i18n_string_locale_translate_seek_screen',
+    'access arguments' => array('translate interface'),
+    'file' => 'i18n_string.pages.inc',
+    'file path' => drupal_get_path('module', 'i18n_string'),
+  );
 }
 
 /**
@@ -647,7 +656,9 @@ function i18n_string_translate_check_string($i18nstring, $account = NULL) {
   if (!empty($i18nstring->format)) {
     if (!i18n_string_allowed_format($i18nstring->format)) {
       $format = filter_format_load($i18nstring->format);
-      return t('This string uses the %name text format. Strings with this format are not allowed for translation.', array('%name' => $format->name));
+      if (is_object($format)) {
+        return t('This string uses the %name text format. Strings with this format are not allowed for translation.', array('%name' => $format->name));
+      }
     }
     elseif ($format = filter_format_load($i18nstring->format)) {
       // It is a text format, check user access to that text format.
